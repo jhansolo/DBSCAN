@@ -77,8 +77,8 @@ core=set()                      #set containig starting pts
 branch=set()                    #set containing new neighbors
 
 """hyper parameters, to be optimized and automated in next iteration"""
-eps=20000
-minPts=80
+eps=3
+minPts=3
 
 """initial cluster ID, starting at 1"""
 clusterId=1
