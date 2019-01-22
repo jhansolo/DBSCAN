@@ -27,7 +27,7 @@ def loadData():
     """load training data. in my case, points generated in CAD and coordinates 
     written to a text file. refer to "points.csv" for formatting"""
     
-    path=r"points.csv"
+    path="points.csv"
     points=pd.read_csv(path).astype(float)
     dim=points.shape[1]
     points['clusterId']=0                               #adding cluster ID column for tagging each point
@@ -95,7 +95,7 @@ clusterIds=frame['clusterId'].unique() #list of unique cluster IDs
 clusterNum=len(clusterIds)              # number of unique clusters
 
 """normalizing: if there are outliers, their clusterId will be 0. this is 
-problematic for plotting if the other clusters have id of up to 10, 20....100
+problematic for plotting if the other clusters have id of starting at 10, 20....100
 since the colors are applied based on the value of the clusterIds. It would skew
 the entire colormap spectrum. The lines below linearizes the differene between
 all the different cluster Ids. Purely for plotting reasons"""
