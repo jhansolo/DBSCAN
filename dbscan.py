@@ -35,7 +35,7 @@ def loadData():
     
     return points, np.array([points['x'],points['y']]).T, dim   # return a pd dataframe as well as a numpy array of the coordinates since it's faster to work with
 
-def calcDist(centerIndex,points,dim):
+def calcDist(centerIndex,points,dim,core):
     """basic Euclidean norm operation"""
     center=points[centerIndex]
     distVec=points-center
@@ -44,7 +44,8 @@ def calcDist(centerIndex,points,dim):
 def find(seed,frame,pts,dim,eps,minPts,clusterId):
     """finds all the neighboring points within the eps radius of the starting 'seed' point"""
     for i in seed:
-        dist=calcDist(i,pts,dim)
+        core.update(seed)                       #update the set containing seed pts
+        dist=calcDist(i,pts,dim,core)
         currentNodes=np.argwhere(dist<eps).flatten('F') 
         ptCount=(len(currentNodes))
         if ptCount>=minPts:
@@ -56,7 +57,6 @@ def find(seed,frame,pts,dim,eps,minPts,clusterId):
         else:
             frame.loc[i,'status']=3
         branch.update(currentNodes)             #set containing the newly found neighbors
-        core.update(seed)                       #update the set containing seed pts
         diff=branch.difference(core)            #find differene between original seed set and new set with newly found neighbors. will use this differene again
 #    print(core)
     return core,diff,ptCount
@@ -65,9 +65,9 @@ def singleCluster(seed,frame,pts,dim,eps,minPts,clusterId):
     """recursively expand the neighborhood"""
     core,diff,count=find(seed,frame,pts,dim,eps,minPts,clusterId)
     while len(diff)!=0: #still room to expand
-        seed=copy.deepcopy(diff)
+        seed=list(copy.deepcopy(diff))
         core,diff,count=find(seed,frame,pts,dim,eps,minPts,clusterId)
-        print(core)
+#        print(core)
     return core
 
 
