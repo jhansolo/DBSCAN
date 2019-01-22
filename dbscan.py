@@ -67,7 +67,7 @@ def singleCluster(seed,frame,pts,dim,eps,minPts,clusterId):
     while len(diff)!=0: #still room to expand
         seed=list(copy.deepcopy(diff))
         core,diff,count=find(seed,frame,pts,dim,eps,minPts,clusterId)
-#        print(core)
+        print('clustering')
     return core
 
 
